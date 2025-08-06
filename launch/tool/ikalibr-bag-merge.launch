@@ -2,9 +2,10 @@
 <launch>
     <!-- extract ros data of topics in rosbags and merge them as a rosbag -->
     <!-- more details, please see the configure file at $(find ikalibr)/config/tool/config-bag-merge.yaml -->
+    <arg name="config_path" default="$(find ikalibr)/config/tool/config-bag-merge.yaml"/>
+
     <node pkg="ikalibr" type="ikalibr_bag_merge" name="ikalibr_bag_merge" output="screen">
-        <param name="config_path" value="$(find ikalibr)/config/tool/config-bag-merge.yaml"
-               type="string"/>
+        <param name="config_path" value="$(arg config_path)" type="string"/>
     </node>
 
     <!--
