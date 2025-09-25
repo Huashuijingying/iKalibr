@@ -188,6 +188,18 @@ public:
     LiDARFrame::Ptr UnpackScan(const rosbag::MessageInstance &msgInstance) override;
 };
 
+class OusterRing16LiDAR : public LiDARDataLoader {
+public:
+    using Ptr = std::shared_ptr<OusterRing16LiDAR>;
+
+public:
+    explicit OusterRing16LiDAR(LidarModelType lidarModel);
+
+    static OusterRing16LiDAR::Ptr Create(LidarModelType lidarModel);
+
+    LiDARFrame::Ptr UnpackScan(const rosbag::MessageInstance &msgInstance) override;
+};
+
 class PandarXTLiDAR : public LiDARDataLoader {
 public:
     using Ptr = std::shared_ptr<PandarXTLiDAR>;

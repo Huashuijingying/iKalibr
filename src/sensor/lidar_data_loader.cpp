@@ -79,6 +79,9 @@ LiDARDataLoader::Ptr LiDARDataLoader::GetLoader(const std::string &lidarModelStr
         case LidarModelType::RSLIDAR_POINTS:
             dataLoader = RSLIDAR_POINTS::Create(lidarModel);
             break;
+        case LidarModelType::OUSTER_POINTS_RING_16:
+            dataLoader = OusterRing16LiDAR::Create(lidarModel);
+            break;
         default:
             throw Status(Status::WARNING, LidarModel::UnsupportedLiDARModelMsg(lidarModelStr));
     }
@@ -357,6 +360,60 @@ LiDARFrame::Ptr OusterLiDAR::UnpackScan(const rosbag::MessageInstance &msgInstan
     CheckMessage<sensor_msgs::PointCloud2>(lidarMsg);
 
     OusterPointCloud pcIn;
+    pcl::fromROSMsg(*lidarMsg, pcIn);
+
+    if (lidarMsg->header.stamp.isZero()) {
+        Status(Status::WARNING, "lidar scan with zero timestamp exists!!!");
+    }
+    double timebase = lidarMsg->header.stamp.toSec();
+
+    IKalibrPointCloud::Ptr cloud(new IKalibrPointCloud());
+    cloud->is_dense = false;
+    cloud->resize(pcIn.size());
+
+    std::size_t j = 0;
+    for (const auto &src : pcIn) {
+        if (IS_POS_NAN(src)) {
+            continue;
+        }
+
+        double depth = sqrt(src.x * src.x + src.y * src.y + src.z * src.z);
+
+        if (depth > 60 || depth < 1) {
+            continue;
+        } else {
+            IKalibrPoint dstPoint;
+            dstPoint.x = src.x;
+            dstPoint.y = src.y;
+            dstPoint.z = src.z;
+            dstPoint.timestamp = timebase + static_cast<double>(src.t) * 1E-9;
+            // attention: use 'PointXYZT' as 'IKalibrPoint' rather than 'PointXYZIT' here
+            // dstPoint.intensity = src.intensity;
+            cloud->at(j++) = dstPoint;
+        }
+    }
+    cloud->resize(j);
+
+    return LiDARFrame::Create(timebase, cloud);
+}
+
+// ------------------------------
+// OusterLiDAR with uint16_t ring
+// ------------------------------
+OusterRing16LiDAR::OusterRing16LiDAR(LidarModelType lidarModel)
+    : LiDARDataLoader(lidarModel) {}
+
+OusterRing16LiDAR::Ptr OusterRing16LiDAR::Create(LidarModelType lidarModel) {
+    return std::make_shared<OusterRing16LiDAR>(lidarModel);
+}
+
+LiDARFrame::Ptr OusterRing16LiDAR::UnpackScan(const rosbag::MessageInstance &msgInstance) {
+    sensor_msgs::PointCloud2::ConstPtr lidarMsg =
+        msgInstance.instantiate<sensor_msgs::PointCloud2>();
+
+    CheckMessage<sensor_msgs::PointCloud2>(lidarMsg);
+
+    OusterRing16PointCloud pcIn;
     pcl::fromROSMsg(*lidarMsg, pcIn);
 
     if (lidarMsg->header.stamp.isZero()) {

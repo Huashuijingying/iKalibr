@@ -118,6 +118,8 @@ struct LidarModel {
         LIVOX_CUSTOM,
 
         RSLIDAR_POINTS,
+
+	OUSTER_POINTS_RING_16,
     };
 
     static std::string UnsupportedLiDARModelMsg(const std::string &modelStr);
