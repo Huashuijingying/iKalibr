@@ -68,10 +68,11 @@ Configor:
           Type: "AWR1843BOOST_CUSTOM"
           Weight: 10.0
     #   1.        Velodyne LiDARs: VLP_16_PACKET, VLP_POINTS
-    #   2.          Ouster LiDARs: OUSTER_POINTS
+    #   2.          Ouster LiDARs: OUSTER_POINTS (Ouster pointcloud with uint8_t ring field)
     #   3. Hesai Pandar XT LiDARs: PANDAR_XT_POINTS
     #   4.           Livox LiDARs: LIVOX_CUSTOM (the official 'xfer_format'=1, mid-360 and avia is recommend)
     #   5.       Robosense LiDARs: RSLIDAR_POINTS (tested on RS-Helios-16P)
+    #   6.          Ouster LiDARs: OUSTER_POINTS_RING_16 (Ouster pointcloud with uint16_t ring field)
     LiDARTopics:
       # if no LiDAR is integrated in your sensor suite, just comment out the following key items
       - key: "/lidar0/scan"

@@ -114,7 +114,7 @@ void CalibSolver::InitSensorInertialAlign() const {
             std::max(1, int(DESIRED_TIME_INTERVAL * _dataMagr->GetLiDARAvgFrequency(lidarTopic)));
 
         spdlog::info("add lidar-inertial alignment factors for '{}' and '{}', align step: {}",
-                     lidarTopic, Configor::DataStream::ReferIMU);
+                     lidarTopic, Configor::DataStream::ReferIMU, ALIGN_STEP);
 
         for (int i = 0; i < static_cast<int>(poseSeq.size()) - ALIGN_STEP; ++i) {
             const auto &sPose = poseSeq.at(i), ePose = poseSeq.at(i + ALIGN_STEP);
@@ -254,7 +254,7 @@ void CalibSolver::InitSensorInertialAlign() const {
                     Configor::DataStream::IMUTopics.at(topic).AcceWeight);
                 ++count;
             }
-            spdlog::info("constraint count of inertial alignment for '{}': {}", topic,
+            spdlog::info("constraint count of inertial alignment for '{}'-'{}': {}", topic,
                          Configor::DataStream::ReferIMU, count);
         }
     }

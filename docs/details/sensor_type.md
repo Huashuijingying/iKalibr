@@ -27,7 +27,7 @@ Currently, the following types of sensor are supported in `iKalibr`:
 + **LiDAR** type: corresponding type definition can be found [here](https://github.com/Unsigned-Long/iKalibr/blob/master/include/sensor/sensor_model.h#L109-L122). The type of LiDAR is more prone to error than others, most of the time error happens when decoding time stamps of points if the wrong LiDAR type is passed in `iKalibr`.
   + *Velodyne LiDARs*: `VLP_16_PACKET`, `VLP_POINTS`.
 
-  + *Ouster LiDARs*: `OUSTER_POINTS`.
+  + *Ouster LiDARs*: `OUSTER_POINTS`, `OUSTER_POINTS_RING_16`.
 
   + *Hesai Pandar XT LiDARs*: `PANDAR_XT_POINTS`.
 

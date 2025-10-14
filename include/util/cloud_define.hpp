@@ -112,6 +112,25 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(PointXYZIR8Y,
                                  (std::uint8_t, ring, ring)
                                  (std::uint32_t, t, t))
 
+// OUSTER lidar with uint16_t ring
+struct EIGEN_ALIGN16 PointXYZIR16Y {
+    PCL_ADD_POINT4D;   // quad-word XYZ
+    float intensity;   // laser intensity reading
+    std::uint16_t ring; // laser ring number
+    std::uint32_t t;
+    float range;
+
+    PCL_MAKE_ALIGNED_OPERATOR_NEW // ensure proper alignment
+};
+
+POINT_CLOUD_REGISTER_POINT_STRUCT(PointXYZIR16Y,
+                                 (float, x, x)
+                                 (float, y, y)
+                                 (float, z, z)
+                                 (float, intensity, intensity)
+                                 (std::uint16_t, ring, ring)
+                                 (std::uint32_t, t, t))
+
 struct EIGEN_ALIGN16 PointXYZITR {
     PCL_ADD_POINT4D;
     float intensity;
@@ -146,6 +165,9 @@ using PosITPointCloud = pcl::PointCloud<PosITPoint>;
 
 using OusterPoint = PointXYZIR8Y;
 using OusterPointCloud = pcl::PointCloud<OusterPoint>;
+
+using OusterRing16Point = PointXYZIR16Y;
+using OusterRing16PointCloud = pcl::PointCloud<OusterRing16Point>;
 
 using ColorPoint = pcl::PointXYZRGBA;
 using ColorPointCloud = pcl::PointCloud<ColorPoint>;

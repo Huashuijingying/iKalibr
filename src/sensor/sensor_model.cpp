@@ -113,8 +113,11 @@ std::string LidarModel::UnsupportedLiDARModelMsg(const std::string &modelStr) {
         "3. Hesai Pandar XT LiDARs: PANDAR_XT_POINTS\n"
         "4.           Livox LiDARs: LIVOX_CUSTOM (the official 'xfer_format'=1, "
         "mid-360 and avia is recommend)\n"
+	"5.       Robosense LiDARs: RSLIDAR_POINTS (tested on RS-Helios-16P)\n"
+        "6.          Ouster LiDARs: OUSTER_POINTS_RING_16 (Ouster pointcloud with "
+	"uint16_t ring field)"
         "...\n"
-        "If you need to use other IMU types, "
+        "If you need to use other LiDAR types, "
         "please 'Issues' us on the profile of the github repository.",
         modelStr);
 }
